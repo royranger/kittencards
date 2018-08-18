@@ -4,12 +4,19 @@ import Card from './Card';
 
 const CardList = ({kittens}) => {
 
-  const cardArray = kittens.map((kitten, i) =>
-     <Card id={kitten.id} name={kitten.name} email={kitten.email} key={i}/> );
-
   return(
     <div>
-      {cardArray}
+      {
+        kittens.map((kitten, i) => {
+          return (
+            <Card
+              id={kitten.id}
+              name={kitten.name}
+              email={kitten.email}
+              key={i}/>
+          )
+        })
+      }
     </div>
   );
 }
