@@ -1,0 +1,17 @@
+body {
+  background: linear-gradient(to right, rgb(253, 89, 230), rgb(255, 250, 143));
+}
+
+@font-face {
+font-family: '3dumb';
+font-style: normal;
+font-weight: normal;
+src: local('3dumb'), url('3Dumb.woff') format('woff');
+}
+
+h1 {
+  font-family: "3dumb";
+  font-weight: 700;
+  color: grey;
+  font-size: 4em;
+  }
