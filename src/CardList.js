@@ -12,7 +12,7 @@ const CardList = ({kittens}) => {
             <Card
               id={kitten.id}
               name={kitten.name}
-              email={kitten.email}
+              zipcode={kitten.address.zipcode}
               key={i}/>
           )
         })

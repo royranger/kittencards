@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import CardList from './CardList';
 import './App.css';
-import {kittens} from './kittens';
 import SearchBox from './SearchBox';
 
 
@@ -9,7 +8,7 @@ class App extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        kittens: kittens,
+        kittens: [],
         searchTerm: ""
       }
       this.onSearchChange = this.onSearchChange.bind(this);
@@ -22,6 +21,16 @@ class App extends Component {
 
     }
 
+    componentDidMount() {
+      fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(people => {
+          this.setState(
+            {kittens: people}
+          )
+        })
+    }
+
     render() {
 
       const filteredKittens = this.state.kittens.filter(kitten => {
@@ -30,7 +39,7 @@ class App extends Component {
 
       return (
         <div className='tc'>
-          <h1>Kitten Cards</h1>
+          <h1 className='f1'>Kitten Cards</h1>
           <SearchBox searchChange={this.onSearchChange}/>
           <CardList kittens={filteredKittens}/>
         </div>
