@@ -19,14 +19,20 @@ class App extends Component {
       this.setState({
         searchTerm: event.target.value
       });
+
     }
 
     render() {
+
+      const filteredKittens = this.state.kittens.filter(kitten => {
+        return kitten.name.toLowerCase().includes(this.state.searchTerm.toLowerCase());
+      });
+
       return (
         <div className='tc'>
           <h1>Kitten Cards</h1>
           <SearchBox searchChange={this.onSearchChange}/>
-          <CardList kittens={this.state.kittens}/>
+          <CardList kittens={filteredKittens}/>
         </div>
       );
     }
