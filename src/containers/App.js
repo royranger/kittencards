@@ -1,9 +1,24 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import CardList from '../components/CardList';
 import './App.css';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import ErrorBoundary from '../components/ErrorBoundary';
+
+import {setSearchTerm} from '../actions';
+
+const mapStateToProps = (state) => {
+  return {
+    searchTerm: state.searchTerm
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSearchChange: (event) => dispatch(setSearchTerm(event.target.value))
+  }
+}
 
 
 class App extends Component {
@@ -11,15 +26,7 @@ class App extends Component {
       super(props);
       this.state = {
         kittens: [],
-        searchTerm: ""
       }
-      this.onSearchChange = this.onSearchChange.bind(this);
-    }
-
-    onSearchChange(event) {
-      this.setState({
-        searchTerm: event.target.value
-      });
     }
 
     componentDidMount() {
@@ -33,7 +40,8 @@ class App extends Component {
     }
 
     render() {
-      const {kittens, searchTerm} = this.state;
+      const {kittens} = this.state;
+      const {searchTerm, onSearchChange} = this.props;
 
       const filteredKittens = kittens.filter(kitten => {
         return kitten.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -45,7 +53,7 @@ class App extends Component {
         return (
           <div className='tc'>
             <h1 className='f1'>Kitten Cards</h1>
-            <SearchBox searchChange={this.onSearchChange}/>
+            <SearchBox searchChange={onSearchChange}/>
             <Scroll>
               <ErrorBoundary>
                 <CardList kittens={filteredKittens}/>
@@ -59,4 +67,4 @@ class App extends Component {
 
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
