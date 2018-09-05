@@ -6,48 +6,39 @@ import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import ErrorBoundary from '../components/ErrorBoundary';
 
-import {setSearchTerm} from '../actions';
+import {setSearchTerm, requestKittens} from '../actions';
 
 const mapStateToProps = (state) => {
   return {
-    searchTerm: state.searchTerm
+    searchTerm: state.filterKittens.searchTerm,
+    kittens: state.requestKittens.kittens,
+    isPending: state.requestKittens.isPending,
+    error: state.requestKittens.error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSearchChange: (event) => dispatch(setSearchTerm(event.target.value))
+    onSearchChange: (event) => dispatch(setSearchTerm(event.target.value)),
+    onRequestKittens: () => dispatch(requestKittens())
   }
 }
 
 
 class App extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        kittens: [],
-      }
-    }
 
-    componentDidMount() {
-      fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-        .then(people => {
-          this.setState(
-            {kittens: people}
-          )
-        })
-    }
+componentDidMount() {
+  this.props.onRequestKittens();
+}
 
     render() {
-      const {kittens} = this.state;
-      const {searchTerm, onSearchChange} = this.props;
+      const {searchTerm, onSearchChange, kittens, isPending} = this.props;
 
       const filteredKittens = kittens.filter(kitten => {
         return kitten.name.toLowerCase().includes(searchTerm.toLowerCase());
       });
 
-      if (!kittens.length) {
+      if (isPending) {
         return <h1 className='tc'>Loading...</h1>
       } else {
         return (
